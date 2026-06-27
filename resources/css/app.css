@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-display {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+main {
+    height: calc(100vh - 4rem) !important;
+    overflow-y: auto !important;
+    display: block !important;
+}
+
+/* PREMIUM DARK MATRIX SCROLLBAR STYLING */
+/* 1. Track (Scrollbar background line) */
+main::-webkit-scrollbar {
+    width: 8px;
+    /* Width perfectly subtle */
+}
+
+main::-webkit-scrollbar-track {
+    background: #050507;
+    /* Blends 100% into your main console color */
+}
+
+/* 2. Thumb (The moving handle indicator) */
+main::-webkit-scrollbar-thumb {
+    background: #18181b;
+    /* Sleek zinc-800 tone */
+    border-radius: 9999px;
+    /* Rounded pill shape for modern UI */
+    border: 2px solid #050507;
+    /* Creates space around the slider */
+}
+
+/* 3. Thumb on Hover (Brighter interaction feedback) */
+main::-webkit-scrollbar-thumb:hover {
+    background: #27272a;
+    /* Zinc-700 on hover */
+}
