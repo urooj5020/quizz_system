@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizzController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,10 +26,17 @@ Route::get('/admin-dashboard' , function(){
 })->name('dashboard-overview');
 
 
-Route::get('/quizz-factory' , function(){
-     return view('admin.quizzFactory');
-})->name('quizz-factory');
+Route::get('/quizz-factory' , [QuizzController::class, 'index'])->name('quizz-factory');
 
 Route::get('/new-quizz' , function(){
     return view('admin.form');
 })->name('add-new');
+
+Route::post('/quizz-info' , [QuizzController::class , 'create'])->name('add-quizz-info');
+
+Route::get('/show-quizz/{id}' , [QuizzController::class, 'showEach' ])->name('show');
+
+Route::get('/quizz-question' , function(){
+    return view('admin.question');
+})->name('question');
+Route::post('/add-quizz-question' , [QuestionController::class , 'create'])->name('add-new-question');

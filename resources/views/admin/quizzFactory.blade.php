@@ -27,12 +27,13 @@
                 </div>
             </div>
 
-            <a href="{{ route('add-new') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/30 text-xs font-mono uppercase tracking-wider text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/10 self-start sm:self-center">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            Initialize New Quiz
-        </a>
+            <a href="{{ route('add-new') }}"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/30 text-xs font-mono uppercase tracking-wider text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/10 self-start sm:self-center">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Initialize New Quiz
+            </a>
         </div>
 
         <form action="#" method="GET"
@@ -67,10 +68,9 @@
         </form>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            @for ($i = 1; $i <= 6; $i++)
-                <div
-                    class="bg-[#050507]/40 border border-zinc-900 hover:border-zinc-800/80 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 group shadow-xl">
+            @foreach ($quizzData as $quizz)
+                <a href="{{ route('show' , $quizz->id) }}"
+                    class="bg-[#050507]/40 border  border-zinc-900 hover:border-zinc-800/80 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 group shadow-xl">
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none duration-500">
                     </div>
@@ -79,7 +79,7 @@
                         <div class="flex items-center justify-between">
                             <span
                                 class="px-2 py-0.5 rounded-full bg-zinc-900/60 border border-zinc-800 font-mono text-[9px] font-bold text-zinc-400 uppercase tracking-wider">
-                                Syntax Array
+                                {{ $quizz->category }}
                             </span>
                             <div class="flex items-center gap-1.5 font-mono text-[10px] text-zinc-500">
                                 <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
@@ -90,17 +90,16 @@
                         <div class="text-left">
                             <h3
                                 class="text-sm font-display font-bold text-zinc-100 group-hover:text-white transition-colors tracking-tight line-clamp-1">
-                                Sample Quiz Framework Title {{ $i }}
+                                {{ $quizz->title }}
                             </h3>
                             <p class="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed font-light">
-                                This is a placeholder description for the quiz layout configuration array. You will loop through
-                                real database content here.
+                                {{ $quizz->desc }}
                             </p>
                         </div>
                     </div>
 
                     <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between relative z-10">
-                        <span class="text-[9px] font-mono text-zinc-600 tracking-tight">ID: #00{{ $i }}</span>
+                        <span class="text-[9px] font-mono text-zinc-600 tracking-tight">ID: #00{{ $quizz->id }}</span>
 
                         <div class="flex items-center gap-2">
                             <a href="#"
@@ -128,8 +127,8 @@
                             </form>
                         </div>
                     </div>
-                </div>
-            @endfor
+                </a>
+            @endforeach
         </div>
 
         <div
