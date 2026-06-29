@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('option_two');
             $table->text('option_three');
             $table->text('option_four');
+            $table->text('correct_key');
             $table->text('correct_option');
             $table->timestamps();
         });

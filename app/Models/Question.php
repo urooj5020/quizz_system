@@ -13,6 +13,7 @@ class Question extends Model
         'option_three',
         'option_four',
         'correct_option',
+        'correct_key',
         'quizz_id',
 
 

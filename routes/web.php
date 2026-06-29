@@ -19,24 +19,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::get('/admin-dashboard' , function(){
-     return view('admin.dashboard');
+Route::get('/admin-dashboard', function () {
+    return view('admin.dashboard');
 })->name('dashboard-overview');
 
 
-Route::get('/quizz-factory' , [QuizzController::class, 'index'])->name('quizz-factory');
+Route::get('/quizz-factory', [QuizzController::class, 'index'])->name('quizz-factory');
 
-Route::get('/new-quizz' , function(){
+Route::get('/new-quizz', function () {
     return view('admin.form');
 })->name('add-new');
 
-Route::post('/quizz-info' , [QuizzController::class , 'create'])->name('add-quizz-info');
+Route::post('/quizz-info', [QuizzController::class, 'create'])->name('add-quizz-info');
 
-Route::get('/show-quizz/{id}' , [QuizzController::class, 'showEach' ])->name('show');
+Route::get('/show-quizz/{id}', [QuizzController::class, 'showEach'])->name('show');
 
-Route::get('/quizz-question' , function(){
+Route::get('/quizz-question', function () {
     return view('admin.question');
 })->name('question');
-Route::post('/add-quizz-question' , [QuestionController::class , 'create'])->name('add-new-question');
+
+Route::post('/add-quizz-question', [QuestionController::class, 'store'])->name('add-new-question');
+Route::delete('/delete/{id}', [QuizzController::class, 'delete'])->name('delete');
+Route::get('/edit/{id}', function () {     return view('admin.form'); })->name('edit');
