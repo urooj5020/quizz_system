@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
             <div>
                 <span class="text-[10px] font-mono font-bold tracking-[0.4em] uppercase text-indigo-400 block">// DATA_CONSOLE_NODE</span>
-                <h1 class="text-2xl font-bold tracking-tight text-white font-display mt-1">Assessment Dashboard</h1>
+                <h1 class="text-4xl font-bold tracking-tight text-white font-display mt-1">{{$user->name}}</h1>
             </div>
             <span class="text-[10px] font-mono text-slate-600 uppercase tracking-widest">// session_node: authenticated</span>
         </div>
@@ -86,30 +86,32 @@
             </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
-                
+                @foreach ($quizzesAvailable as $quizz)
+                 
                 <div class="p-6 rounded-xl bg-[#04060c]/30 border border-slate-900 hover:border-slate-800 flex flex-col justify-between min-h-[280px] transition-all duration-200 group relative">
                     <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/[0.02] to-transparent pointer-events-none"></div>
                     
                     <div class="space-y-3">
                         <div class="flex justify-between items-center text-[10px] font-mono">
-                            <span class="text-indigo-400 uppercase font-medium tracking-wider">[Back-End Development]</span>
-                            <span class="text-slate-600">2026-06-25</span>
+                            <span class="text-indigo-400 uppercase font-medium tracking-wider">[{{ $quizz->category }}]</span>
+                            <span class="text-slate-600">{{ $quizz->created_at->format('Y-m-d') }}</span>
                         </div>
                         <div class="space-y-1">
-                            <h4 class="text-base font-bold text-white uppercase tracking-wide font-display group-hover:text-indigo-400 transition-colors">Laravel Application Structures</h4>
-                            <p class="text-xs text-slate-400 font-light leading-normal line-clamp-2">Test understanding of Service Providers, Middleware layers, and Service Container binding mechanics.</p>
+                            <h4 class="text-base font-bold text-white uppercase tracking-wide font-display group-hover:text-indigo-400 transition-colors">{{ $quizz->title }}</h4>
+                            <p class="text-xs text-slate-400 font-light leading-normal line-clamp-2">{{ $quizz->desc }}</p>
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-slate-950 flex justify-between items-center mt-6">
                         <span class="text-[10px] font-mono text-slate-500">Total Items: <span class="text-slate-300 font-bold">10 Questions</span></span>
-                        <a href="#" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-display text-xs font-bold uppercase tracking-wider rounded-md shadow-lg shadow-indigo-600/10 transition-all">
+                        <a href="{{ route('start-quizz' , $quizz->id) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-display text-xs font-bold uppercase tracking-wider rounded-md shadow-lg shadow-indigo-600/10 transition-all">
                             Start Quiz
                         </a>
                     </div>
                 </div>
-
-                <div class="p-6 rounded-xl bg-[#04060c]/30 border border-slate-900 hover:border-slate-800 flex flex-col justify-between min-h-[280px] transition-all duration-200 group relative">
+   
+                @endforeach
+                <!-- <div class="p-6 rounded-xl bg-[#04060c]/30 border border-slate-900 hover:border-slate-800 flex flex-col justify-between min-h-[280px] transition-all duration-200 group relative">
                     <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-purple-500/[0.02] to-transparent pointer-events-none"></div>
                     
                     <div class="space-y-3">
@@ -151,7 +153,7 @@
                             Start Quiz
                         </a>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </section>

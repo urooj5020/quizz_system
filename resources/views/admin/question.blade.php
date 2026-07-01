@@ -14,21 +14,27 @@
                 </a>
                 <h1 class="text-2xl font-display font-bold tracking-tight text-white flex items-center gap-2">
                     <span class="w-2 h-2 rounded bg-indigo-500 shadow-md shadow-indigo-500/50"></span>
-                    Inject Question Vector
+                    {{ $question->exists ? 'Mutate Question Vector' : 'Inject Question Vector' }}
                 </h1>
-                <p class="text-xs font-mono text-zinc-500 uppercase tracking-widest mt-1">// Append interactive evaluation nodes to cluster</p>
+                <p class="text-xs font-mono text-zinc-500 uppercase tracking-widest mt-1">
+                    {{ $question->exists ? '// Rewriting matrix values for node ID: #'.$question->id : '// Append interactive evaluation nodes to cluster' }}
+                </p>
             </div>
         </div>
 
-        <form method="post" action="{{ route('add-new-question') }}"
+        <form method="post" action="{{ $question->exists ? route('update-question', $question->id) : route('add-new-question') }}"
             class="bg-[#050507]/40 border border-zinc-900 p-6 md:p-8 rounded-2xl shadow-xl space-y-6 relative overflow-hidden">
             @csrf
+            
+            @if($question->exists)
+                @method('PUT')
+            @endif
             
             <div class="space-y-2 text-left">
                 <label class="block text-xs font-mono uppercase tracking-wider text-zinc-500 font-bold">
                     // Question Statement / Prompt
                 </label>
-                <input type="text" name="content" value="{{ old('content') }}"
+                <input type="text" name="content" value="{{ old('content', $question->content) }}"
                     placeholder="e.g., What is the primary operational complexity of a standard quicksort array pivot?"
                     class="w-full bg-[#050507] border @error('content') border-rose-900 focus:border-rose-500 @else border-zinc-900 focus:border-indigo-500 @enderror rounded-xl px-4 py-3 text-sm font-sans text-zinc-200 placeholder-zinc-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all duration-200">
                 @error('content')
@@ -45,45 +51,46 @@
 
                     <div class="bg-[#050507] border @error('option_one') border-rose-900 @else border-zinc-900 @enderror hover:border-zinc-800 rounded-xl p-3 flex items-center gap-3 transition-all duration-200 focus-within:border-indigo-500/50">
                         <span class="text-xs font-mono font-bold text-zinc-600 px-2 py-1 bg-zinc-950 border border-zinc-900 rounded-lg">A</span>
-                        <input type="text" name="option_one" value="{{ old('option_one') }}" placeholder="First parameter variant..."
+                        <input type="text" name="option_one" value="{{ old('option_one', $question->option_one) }}" placeholder="First parameter variant..."
                             class="flex-1 bg-transparent border-none p-0 text-xs text-zinc-200 placeholder-zinc-700 focus:ring-0 focus:outline-none">
                         <label class="flex items-center cursor-pointer p-1">
-                            <input type="radio" name="correct_option" value="A" {{ old('correct_option') == 'A' ? 'checked' : '' }}
+                            <input type="radio" name="correct_option" value="A" {{ old('correct_option', $question->correct_option) == 'A' ? 'checked' : '' }}
                                 class="w-4 h-4 bg-[#050507] border border-zinc-800 text-emerald-500 focus:ring-offset-0 focus:ring-0">
                         </label>
                     </div>
 
                     <div class="bg-[#050507] border @error('option_two') border-rose-900 @else border-zinc-900 @enderror hover:border-zinc-800 rounded-xl p-3 flex items-center gap-3 transition-all duration-200 focus-within:border-indigo-500/50">
                         <span class="text-xs font-mono font-bold text-zinc-600 px-2 py-1 bg-zinc-950 border border-zinc-900 rounded-lg">B</span>
-                        <input type="text" name="option_two" value="{{ old('option_two') }}" placeholder="Second parameter variant..."
+                        <input type="text" name="option_two" value="{{ old('option_two', $question->option_two) }}" placeholder="Second parameter variant..."
                             class="flex-1 bg-transparent border-none p-0 text-xs text-zinc-200 placeholder-zinc-700 focus:ring-0 focus:outline-none">
                         <label class="flex items-center cursor-pointer p-1">
-                            <input type="radio" name="correct_option" value="B" {{ old('correct_option') == 'B' ? 'checked' : '' }}
+                            <input type="radio" name="correct_option" value="B" {{ old('correct_option', $question->correct_option) == 'B' ? 'checked' : '' }}
                                 class="w-4 h-4 bg-[#050507] border border-zinc-800 text-emerald-500 focus:ring-offset-0 focus:ring-0">
                         </label>
                     </div>
 
                     <div class="bg-[#050507] border @error('option_three') border-rose-900 @else border-zinc-900 @enderror hover:border-zinc-800 rounded-xl p-3 flex items-center gap-3 transition-all duration-200 focus-within:border-indigo-500/50">
                         <span class="text-xs font-mono font-bold text-zinc-600 px-2 py-1 bg-zinc-950 border border-zinc-900 rounded-lg">C</span>
-                        <input type="text" name="option_three" value="{{ old('option_three') }}" placeholder="Third parameter variant..."
+                        <input type="text" name="option_three" value="{{ old('option_three', $question->option_three) }}" placeholder="Third parameter variant..."
                             class="flex-1 bg-transparent border-none p-0 text-xs text-zinc-200 placeholder-zinc-700 focus:ring-0 focus:outline-none">
                         <label class="flex items-center cursor-pointer p-1">
-                            <input type="radio" name="correct_option" value="C" {{ old('correct_option') == 'C' ? 'checked' : '' }}
+                            <input type="radio" name="correct_option" value="C" {{ old('correct_option', $question->correct_option) == 'C' ? 'checked' : '' }}
                                 class="w-4 h-4 bg-[#050507] border border-zinc-800 text-emerald-500 focus:ring-offset-0 focus:ring-0">
                         </label>
                     </div>
 
                     <div class="bg-[#050507] border @error('option_four') border-rose-900 @else border-zinc-900 @enderror hover:border-zinc-800 rounded-xl p-3 flex items-center gap-3 transition-all duration-200 focus-within:border-indigo-500/50">
                         <span class="text-xs font-mono font-bold text-zinc-600 px-2 py-1 bg-zinc-950 border border-zinc-900 rounded-lg">D</span>
-                        <input type="text" name="option_four" value="{{ old('option_four') }}" placeholder="Fourth parameter variant..."
+                        <input type="text" name="option_four" value="{{ old('option_four', $question->option_four) }}" placeholder="Fourth parameter variant..."
                             class="flex-1 bg-transparent border-none p-0 text-xs text-zinc-200 placeholder-zinc-700 focus:ring-0 focus:outline-none">
                         <label class="flex items-center cursor-pointer p-1">
-                            <input type="radio" name="correct_option" value="D" {{ old('correct_option') == 'D' ? 'checked' : '' }}
+                            <input type="radio" name="correct_option" value="D" {{ old('correct_option', $question->correct_option) == 'D' ? 'checked' : '' }}
                                 class="w-4 h-4 bg-[#050507] border border-zinc-800 text-emerald-500 focus:ring-offset-0 focus:ring-0">
                         </label>
                     </div>
 
                 </div>
+                
                 @if($errors->has('correct_option') || $errors->has('option_one') || $errors->has('option_two') || $errors->has('option_three') || $errors->has('option_four'))
                     <span class="text-rose-500 font-mono text-[10px] uppercase pl-1 block mt-2">!! Please fully populate configurations and select one core correct option vector</span>
                 @endif
@@ -94,9 +101,8 @@
                     Cancel
                 </button>
 
-
-                 <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/30 text-xs font-mono uppercase tracking-wider text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/10">
-                    Commit Vector Node
+                <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/30 text-xs font-mono uppercase tracking-wider text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/10">
+                    {{ $question->exists ? 'Save Cluster Modifications' : 'Commit Vector Node' }}
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7-7M21 12H3" />
                     </svg>

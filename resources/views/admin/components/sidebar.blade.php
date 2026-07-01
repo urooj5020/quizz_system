@@ -33,9 +33,9 @@
             <div class="space-y-1.5">
                 <span class="px-3 text-[9px] text-zinc-700 font-bold block mb-2">// Integrity Arrays</span>
                 
-                <a href="#" 
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-150 {{ request()->routeIs('admin.terminals') ? 'text-indigo-400 bg-indigo-950/20 border-indigo-900/40 font-bold' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30 border-transparent' }}">
-                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.terminals') ? 'bg-indigo-500 animate-pulse' : 'bg-zinc-800' }}"></span>
+                <a href="{{ route('show-users') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-150 {{ request()->routeIs('show-users') ? 'text-indigo-400 bg-indigo-950/20 border-indigo-900/40 font-bold' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30 border-transparent' }}">
+                    <span class="w-1.5 h-1.5 rounded-full"></span>
                     User Terminal Nodes
                 </a>
 
