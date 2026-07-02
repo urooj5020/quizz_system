@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Quizz;
 use Illuminate\Http\Request;
 use App\Models\Question;
 
@@ -122,16 +123,75 @@ class QuestionController extends Controller
     }
     public function delete($id)
     {
-      $question = Question::findOrFail($id);
-      $question->delete();
-      return back();
+        $question = Question::findOrFail($id);
+        $question->delete();
+        return back();
     }
-    
 
+    public function startQuizz($id)
+    {
+        $questionIds = Question::where('quizz_id', $id)->pluck('id')->toArray();
+        if (empty($questionIds)) {
+            return back()->with('error', "No Questions Found");
+        }
+        session([
+            'quizz_id' => $id,
+            'quizz_questions' => $questionIds,
+            'quizz_current_index' => 0,
+            'quizz_answers' => []
+        ]);
+        return redirect()->route('show-quizz-question');
+    }
+    public function showQuestion()
+    {
+        $questions = session('quizz_questions');
+        $currentIndex = session('quizz_current_index', 0);
+        if ($currentIndex >= count($questions)) {
+            return redirect()->route('quizz-complete');
+        }
+        $questionId = $questions[$currentIndex];
 
+        $question = Question::findOrFail($questionId);
+        return view('quizzQuestion', [
+            'question' => $question,
+            'currentIndex' => $currentIndex,
+            'totalQuestions' => count($questions)
+        ]);
+    }
 
+    public function submitAnswer(Request $request)
+    {
+        $request->validate([
+            'answer' => 'required'
+        ]);
+        $questions = session('quizz_questions');
+        $currentIndex = session('quizz_current_index', 0);
+        $currentQuestionId = $questions[$currentIndex];
+        $answers = session('qizz_answers', []);
+        $answers[$currentQuestionId] = $request->input('answer');
+        session(['quizz_answers' => $answers]);
+        // dd(session('quizz_answers'));
+        session(['quizz_current_index' => $currentIndex + 1]);
 
+        return redirect()->route('show-quizz-question');
+    }
+    public function quizzCompletion()
+    {
+        $quizz_id = session('quizz_id');
+        $quizz_info = Quizz::findOrFail($quizz_id);
+        return view('quizzComplete', compact('quizz_info'));
+    }
 
+    public function review()
+    {
+        // Fetch all question arrays linked onto the current evaluation template session stream
+        $questionIds = session('quizz_questions', []);
+        $questions = Question::whereIn('id', $questionIds)->get();
+
+        // Pass user responses array mapping [question_id => user_selected_key]
+        $sessionAnswers = session('quizz_answers', []);
+        return view('review', compact('questions', 'sessionAnswers'));
+    }
 
 
 

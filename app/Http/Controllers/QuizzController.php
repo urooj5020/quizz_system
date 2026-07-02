@@ -83,10 +83,7 @@ class QuizzController extends Controller
         return redirect()->back();
     }
 
-    public function startQuizz($id){
-        $questions = Question::where('quizz_id' , $id);
-        return view('quizzQuestion', compact('questions'));
-    }
+   
 
 
 
