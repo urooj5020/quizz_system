@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('attempted_quizzs', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->integer('quizz_id');
+            $table->integer('score');
             $table->timestamps();
         });
     }

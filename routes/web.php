@@ -72,7 +72,7 @@ Route::get('/quizz-completed', [QuestionController::class , 'quizzCompletion'])-
 
 Route::get('/review' , [QuestionController::class , 'review'])->name('review');
 
-
+Route::get('/evaluation-complete' , [QuestionController::class , 'evaluation'])->name('evaluation-complete');
 
 
 

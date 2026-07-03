@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AttemptedQuizz;
 use App\Models\Quizz;
 use Illuminate\Http\Request;
 use App\Models\Question;
@@ -140,13 +141,17 @@ class QuestionController extends Controller
             'quizz_current_index' => 0,
             'quizz_answers' => []
         ]);
+
         return redirect()->route('show-quizz-question');
     }
     public function showQuestion()
     {
         $questions = session('quizz_questions');
         $currentIndex = session('quizz_current_index', 0);
+
+
         if ($currentIndex >= count($questions)) {
+
             return redirect()->route('quizz-complete');
         }
         $questionId = $questions[$currentIndex];
@@ -165,21 +170,71 @@ class QuestionController extends Controller
             'answer' => 'required'
         ]);
         $questions = session('quizz_questions');
+
         $currentIndex = session('quizz_current_index', 0);
+
         $currentQuestionId = $questions[$currentIndex];
-        $answers = session('qizz_answers', []);
+
+        $answers = session('qizz_answers');
         $answers[$currentQuestionId] = $request->input('answer');
         session(['quizz_answers' => $answers]);
-        // dd(session('quizz_answers'));
         session(['quizz_current_index' => $currentIndex + 1]);
+        // dd(session('quizz_current_index'));
+
 
         return redirect()->route('show-quizz-question');
     }
     public function quizzCompletion()
     {
+        // 1. Session data nikaalein
+        $quizz_questions = session('quizz_questions', []);
+        $sessionAnswers = session('quizz_answers', []);
+
+        if (empty($quizz_questions)) {
+            return redirect()->route('dashboard');
+        }
+
+        // 2. Database se un questions ka details uthayein taake correct_key check ho sake
+        $questions = Question::whereIn('id', $quizz_questions)->get();
+
+        // Quiz Info metadata load karne ke liye (Assumption: First question se quiz_id mil rahi hai)
+        $quizz_info = Quizz::find($questions->first()->quizz_id);
+
+        // 3. Loop chala kar correct answers ko counter mein badhayein
+        $totalCorrect = 0;
+        foreach ($questions as $question) {
+            $userAns = $sessionAnswers[$question->id] ?? null;
+
+            // Agar options submit karte waqt values 1, 2, 3, 4 thin to alphabet conversions map:
+            $numToLetterMap = ['1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D'];
+            if (isset($numToLetterMap[$userAns])) {
+                $userAns = $numToLetterMap[$userAns];
+            }
+
+            if ($userAns == $question->correct_key) {
+                $totalCorrect++;
+            }
+        }
+
+        // 4. Percentage calculation math loop
+        $totalQuestionsCount = count($quizz_questions);
+
+        $scorePercentage = $totalQuestionsCount > 0 ? round(($totalCorrect / $totalQuestionsCount) * 100) : 0;
+
         $quizz_id = session('quizz_id');
-        $quizz_info = Quizz::findOrFail($quizz_id);
-        return view('quizzComplete', compact('quizz_info'));
+        $user_id = auth()->id();
+        $attemptedRecord = AttemptedQuizz::create([
+            'quizz_id' => $quizz_id,
+            'user_id' => $user_id,
+            'score' => $scorePercentage
+        ]);
+        // 5. Data View compact pipeline mapping
+        return view('quizzComplete', compact(
+            'quizz_info',
+            'quizz_questions',
+            'totalCorrect',
+            'scorePercentage'
+        ));
     }
 
     public function review()
@@ -193,7 +248,10 @@ class QuestionController extends Controller
         return view('review', compact('questions', 'sessionAnswers'));
     }
 
-
+    public function evaluation()
+    {
+        return redirect()->route('dashboard');
+    }
 
 
 

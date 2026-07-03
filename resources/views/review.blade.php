@@ -107,7 +107,7 @@
         </div>
 
         <div class="pt-6 border-t border-zinc-900 flex items-center justify-end">
-            <a href="#"
+            <a href="{{ route('evaluation-complete') }}"
                 class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/30 text-xs font-mono uppercase tracking-wider text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-600/10">
                 Complete Evaluation Review &rarr;
             </a>
