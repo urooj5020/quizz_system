@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizzController;
@@ -20,9 +21,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/admin-dashboard', function () {
-    return view('admin.dashboard');
-})->name('dashboard-overview');
+Route::get('/admin-dashboard', [QuizzController::class, 'adminData'])->name('dashboard-overview');
 
 
 Route::get('/quizz-factory', [QuizzController::class, 'index'])->name('quizz-factory');
@@ -74,10 +73,11 @@ Route::get('/review' , [QuestionController::class , 'review'])->name('review');
 
 Route::get('/evaluation-complete' , [QuestionController::class , 'evaluation'])->name('evaluation-complete');
 
+Route::get('category' , [CategoryController::class , 'index'])->name('categories');
 
+Route::get('/add-category' , [CategoryController::class , 'create'])->name('add-category');
 
-
-
+Route::post('/save-category' , [CategoryController::class , 'add'])->name('save-category');
 
 
 

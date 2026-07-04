@@ -16,21 +16,25 @@
             Data Matrix Refresh: <span class="text-zinc-300">Real-Time</span>
         </div>
     </div>
-
+@php
+$recentRuns = $quizzRuns->filter(function ($attempt) {
+    return $attempt->created_at >= now()->subHours(24);
+});
+@endphp
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-5">
         <div class="p-6 bg-zinc-950/40 border border-zinc-800/50 rounded-2xl relative overflow-hidden group">
             <p class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Total Users Registered</p>
             <div class="flex items-baseline gap-2 mt-2">
-                <p class="text-4xl font-black text-white">4,821</p>
+                <p class="text-4xl font-black text-white">{{ count($totalUsers) }}</p>
                 <span class="text-xs font-mono text-[#10b981]">+8.4%</span>
             </div>
-            <p class="text-[10px] text-zinc-600 mt-2 font-mono">Active within 24hrs: 1,102</p>
+            <p class="text-[10px] text-zinc-600 mt-2 font-mono">Active within 24hrs: {{ count($recentRuns) }}</p>
         </div>
 
         <div class="p-6 bg-zinc-950/40 border border-zinc-800/50 rounded-2xl relative overflow-hidden group">
             <p class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Active Question Pool</p>
             <div class="flex items-baseline gap-2 mt-2">
-                <p class="text-4xl font-black text-white">340</p>
+                <p class="text-4xl font-black text-white">{{ count($activeQuestions )}}</p>
                 <span class="text-xs font-mono text-zinc-600">Items</span>
             </div>
             <p class="text-[10px] text-zinc-600 mt-2 font-mono">Across 5 Primary Categories</p>
@@ -39,7 +43,7 @@
         <div class="p-6 bg-zinc-950/40 border border-zinc-800/50 rounded-2xl relative overflow-hidden group">
             <p class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Total Quiz Runs</p>
             <div class="flex items-baseline gap-2 mt-2">
-                <p class="text-4xl font-black text-[#3b82f6]">12,942</p>
+                <p class="text-4xl font-black text-[#3b82f6]">{{ count($quizzRuns) }}</p>
             </div>
             <p class="text-[10px] text-zinc-600 mt-2 font-mono">Completion Rate: 94.2%</p>
         </div>
@@ -47,7 +51,7 @@
         <div class="p-6 bg-zinc-950/40 border border-zinc-800/50 rounded-2xl relative overflow-hidden group">
             <p class="text-xs font-mono text-zinc-500 uppercase tracking-wider">Global Average Score</p>
             <div class="flex items-baseline gap-2 mt-2">
-                <p class="text-4xl font-black text-[#10b981]">78.6%</p>
+                <p class="text-4xl font-black text-[#10b981]">{{ $globalAvrgScore}}</p>
                 <span class="text-xs font-mono text-zinc-600">Mean</span>
             </div>
             <p class="text-[10px] text-zinc-600 mt-2 font-mono">Standard Deviation: 4.1%</p>
@@ -114,13 +118,13 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="p-4 bg-zinc-900/30 border border-zinc-900 rounded-xl text-center">
                     <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Passed Sessions</p>
-                    <p class="text-2xl font-black text-[#10b981] mt-1">11,311</p>
+                    <p class="text-2xl font-black text-[#10b981] mt-1">{{  count($passed) }}</p>
                     <span class="text-[10px] font-mono text-zinc-600 block mt-1">87.4% Success Rate</span>
                 </div>
 
                 <div class="p-4 bg-zinc-900/30 border border-zinc-900 rounded-xl text-center">
                     <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Failed Sessions</p>
-                    <p class="text-2xl font-black text-rose-500 mt-1">1,631</p>
+                    <p class="text-2xl font-black text-rose-500 mt-1">{{ count($failed) }}</p>
                     <span class="text-[10px] font-mono text-zinc-600 block mt-1">12.6% Drop Ratio</span>
                 </div>
             </div>

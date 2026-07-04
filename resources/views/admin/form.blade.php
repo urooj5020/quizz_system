@@ -95,6 +95,34 @@
                 @enderror
             </div>
 
+            <div class="space-y-3 text-left pt-2" x-data="{ currentStatus: '{{ old('status', $quizz->status ?? 'active') }}' }">
+                <label class="block text-xs font-mono uppercase tracking-wider text-zinc-500 font-bold">
+                    // Operational Cluster Visibility State
+                </label>
+                
+                <div class="inline-flex rounded-xl bg-[#050507] border border-zinc-900 p-1 select-none font-mono text-[11px]">
+                    <label class="relative flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-all duration-150"
+                        :class="currentStatus === 'active' ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 shadow-md shadow-indigo-500/5' : 'text-zinc-600 hover:text-zinc-400 border border-transparent'">
+                        <input type="radio" name="status" value="active" x-model="currentStatus" class="hidden">
+                        <span class="w-1.5 h-1.5 rounded-full" :class="currentStatus === 'active' ? 'bg-indigo-400 animate-pulse' : 'bg-zinc-800'"></span>
+                        ACTIVE_NODE
+                    </label>
+
+                    <label class="relative flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-all duration-150"
+                        :class="currentStatus === 'inactive' ? 'bg-zinc-900 text-zinc-400 border border-zinc-800 shadow-md' : 'text-zinc-600 hover:text-zinc-400 border border-transparent'">
+                        <input type="radio" name="status" value="inactive" x-model="currentStatus" class="hidden">
+                        <span class="w-1.5 h-1.5 rounded-full" :class="currentStatus === 'inactive' ? 'bg-zinc-500' : 'bg-zinc-800'"></span>
+                        INACTIVE_OFFLINE
+                    </label>
+                </div>
+
+                @error('status')
+                    <div class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-rose-400/90 pl-1 pt-1">
+                        <span class="text-rose-500 font-bold">!!</span> {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             <div class="pt-6 border-t border-zinc-900 flex items-center justify-end gap-4">
                 <a href="{{ route('quizz-factory') }}"
                     class="px-4 py-2.5 bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-zinc-200 rounded-xl transition-all duration-150 text-center">

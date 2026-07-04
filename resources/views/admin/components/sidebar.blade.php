@@ -39,6 +39,12 @@
                     User Terminal Nodes
                 </a>
 
+                <a href="{{ route('categories') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-150 {{ request()->routeIs('categories') ? 'text-indigo-400 bg-indigo-950/20 border-indigo-900/40 font-bold' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30 border-transparent' }}">
+                    <span class="w-1.5 h-1.5 rounded-full"></span>
+                    Category Nodes
+                </a>
+
                 <a href="#" 
                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-all duration-150 {{ request()->routeIs('admin.audits') ? 'text-indigo-400 bg-indigo-950/20 border-indigo-900/40 font-bold' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30 border-transparent' }}">
                     <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('admin.audits') ? 'bg-indigo-500 animate-pulse' : 'bg-zinc-800' }}"></span>

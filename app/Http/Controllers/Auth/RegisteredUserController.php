@@ -86,28 +86,33 @@ class RegisteredUserController extends Controller
     {
         $userId = auth()->id();
 
-        // 1. Saare available quizzes nikaalein
-        $quizzesAvailable = Quizz::all();
+        // 1. Fetch available quizzes EXCEPT those already completed
+        $quizzesAvailable = Quizz::whereDoesntHave('attempts', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->withCount('questions')->get();
 
-        // 2. User ke saare attempts direct user_id query se nikaalein
-        $attempted = AttemptedQuizz::where('user_id', $userId)->get();
+        // 2. Load all historical attempts with quiz relationship metadata
+        $attempted = AttemptedQuizz::where('user_id', $userId)
+            ->with('quiz')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // 3. Metrics calculations
-        $passedUnits = $attempted->where('score_percentage', '>=', 50)->count();
-        $failedUnits = $attempted->where('score_percentage', '<', 50)->count();
+        // 3. Separate arrays split via collection helpers for display
+        $passedQuizzes = $attempted->where('score_percentage', '>=', 50);
+        $failedQuizzes = $attempted->where('score_percentage', '<', 50);
+
+        // 4. Metric numbers calculations
+        $passedUnits = $passedQuizzes->count();
+        $failedUnits = $failedQuizzes->count();
         $averageScore = $attempted->count() > 0 ? $attempted->avg('score_percentage') : 0;
+        $lastAttempt = $attempted->first();
 
-        // 4. Last attempt nikaal kar uska quiz data manually fetch karein
-        $lastAttempt = $attempted->sortByDesc('created_at')->first();
-        // dd($lastAttempt);
-        if ($lastAttempt) {
-            // Sahi Tareeqa: Model class ko statically call karein
-            $lastAttempt->quizz_id = Quizz::find($lastAttempt->quizz_id);
-        }
-
+        // 5. Commit pipeline arrays to View matrix mapping
         return view('dashboard', compact(
             'quizzesAvailable',
             'attempted',
+            'passedQuizzes',
+            'failedQuizzes',
             'lastAttempt',
             'passedUnits',
             'failedUnits',

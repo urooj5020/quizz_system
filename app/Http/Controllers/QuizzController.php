@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttemptedQuizz;
 use App\Models\Question;
 use App\Models\Quizz;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class QuizzController extends Controller
@@ -14,7 +16,8 @@ class QuizzController extends Controller
         return view('admin.quizzFactory', compact('quizzData'));
     }
 
-    public function cancel(){
+    public function cancel()
+    {
         session()->forget('quizz_id');
         return redirect('quizz-factory');
     }
@@ -31,6 +34,7 @@ class QuizzController extends Controller
             'category' => 'required',
             'time' => 'required',
             'desc' => 'required',
+            'status' => 'required|in:active,inactive'
         ]);
 
         $quizz = Quizz::create([
@@ -38,8 +42,9 @@ class QuizzController extends Controller
             'category' => $request->category,
             'time' => $request->time,
             'desc' => $request->desc,
+            'status' => $request->status
         ]);
-
+        $quizz->save();
         session()->put('quizz_id', $quizz->id);
         return redirect('quizz-question');
     }
@@ -64,9 +69,10 @@ class QuizzController extends Controller
             'category' => 'required',
             'time' => 'required',
             'desc' => 'required',
+            'status' => 'required'
         ]);
 
-       
+
         $quizz = Quizz::findOrFail($id);
 
         $quizz->update([
@@ -74,6 +80,7 @@ class QuizzController extends Controller
             'category' => $request->category,
             'time' => $request->time,
             'desc' => $request->desc,
+            'status' => $request->status
         ]);
         return redirect()->route('quizz-factory');
     }
@@ -83,7 +90,25 @@ class QuizzController extends Controller
         return redirect()->back();
     }
 
-   
+    public function adminData()
+    {
+        $totalUsers = User::get();
+        $activeQuestions = Question::get();
+        $activeQuizzes = Quizz::where('status', 'active')->get();
+        $quizzRuns = AttemptedQuizz::get();
+        $globalAvrgScore = $quizzRuns->avg('score') ?? 0;
+        $passed = AttemptedQuizz::where('score', '>', '50')->get();
+        $failed = AttemptedQuizz::where('score', '<=', '50')->get();
+        return view('admin.dashboard', compact(
+            'totalUsers',
+            'activeQuestions',
+            'activeQuizzes',
+            'quizzRuns',
+            'globalAvrgScore',
+            'failed',
+            'passed'
+        ));
+    }
 
 
 

@@ -79,6 +79,12 @@
                         {{ $quizz->desc }}
                     </p>
                 </div>
+                <div class="bg-[#050507]/40 border border-zinc-900 rounded-2xl p-6 text-left space-y-2">
+                    <h3 class="text-xs font-mono uppercase tracking-widest text-zinc-500 font-bold">// Status</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed font-light font-sans">
+                        {{ strtoupper($quizz->status) }}
+                    </p>
+                </div>
             </div>
 
             <div class="lg:col-span-2 space-y-4">
