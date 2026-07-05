@@ -41,8 +41,12 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Agar user admin hai (is_admin == 1 ya true)
+        if ($request->user()->is_admin) {
+            return redirect()->intended(route('dashboard-overview', absolute: false));
+        } else {
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**

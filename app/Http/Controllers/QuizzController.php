@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttemptedQuizz;
+use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quizz;
 use App\Models\User;
@@ -23,8 +24,12 @@ class QuizzController extends Controller
     }
     public function create()
     {
-
-        return view('admin.form', ['quizz' => new Quizz()]);
+        $categories = Category::where('status' , '=' , 'active')->get();
+        
+        return view('admin.form', [
+        'quizz' => new Quizz(),
+        'categories' => $categories
+    ]);
     }
 
     public function store(Request $request)

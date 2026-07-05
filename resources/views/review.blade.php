@@ -23,7 +23,7 @@
                     // 1. Session se user ka answer nikalna (e.g., '1', '2', '3', '4' ya 'A', 'B', 'C', 'D')
                     $userSelectedKey = $sessionAnswers[$question->id] ?? null;
 
-               
+                    // dd($question->id);
                     $numToLetterMap = ['1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D'];
                     if (isset($numToLetterMap[$userSelectedKey])) {
                         $userSelectedKey = $numToLetterMap[$userSelectedKey];
@@ -69,6 +69,7 @@
                                 @php
                                     $isThisCorrectAnswer = ($key == $correctKey);
                                     $isThisUserSelection = ($key == $userSelectedKey);
+                                    
                                 @endphp
 
                                 <div

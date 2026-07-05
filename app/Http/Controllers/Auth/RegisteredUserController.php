@@ -98,13 +98,13 @@ class RegisteredUserController extends Controller
             ->get();
 
         // 3. Separate arrays split via collection helpers for display
-        $passedQuizzes = $attempted->where('score_percentage', '>=', 50);
-        $failedQuizzes = $attempted->where('score_percentage', '<', 50);
+        $passedQuizzes = $attempted->where('score', '>=', 50);
+        $failedQuizzes = $attempted->where('score', '<', 50);
 
         // 4. Metric numbers calculations
         $passedUnits = $passedQuizzes->count();
         $failedUnits = $failedQuizzes->count();
-        $averageScore = $attempted->count() > 0 ? $attempted->avg('score_percentage') : 0;
+        $averageScore = $attempted->count() > 0 ? $attempted->avg('score') : 0;
         $lastAttempt = $attempted->first();
 
         // 5. Commit pipeline arrays to View matrix mapping
@@ -118,5 +118,10 @@ class RegisteredUserController extends Controller
             'failedUnits',
             'averageScore'
         ));
+    }
+
+    public function adminDetail(){
+        $admin = User::where('is_admin' , '1')->get();
+        return view('admin.admin-detail' , compact('admin'));
     }
 }

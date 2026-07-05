@@ -164,26 +164,35 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function submitAnswer(Request $request)
-    {
-        $request->validate([
-            'answer' => 'required'
-        ]);
-        $questions = session('quizz_questions');
+ public function submitAnswer(Request $request)
+{
+    // 1. Request Validation Shield
+    $request->validate([
+        'answer' => 'required'
+    ]);
 
-        $currentIndex = session('quizz_current_index', 0);
+    // 2. Fetch Session Matrix Pipelines
+    $questions = session('quizz_questions');
+    $currentIndex = session('quizz_current_index', 0);
 
-        $currentQuestionId = $questions[$currentIndex];
+    // Dynamic extraction of active question context
+    // Safe check: Agar array mein objects hain to ID lein, warna direct check karein
+    $currentQuestionData = $questions[$currentIndex];
+    $currentQuestionId = is_object($currentQuestionData) ? $currentQuestionData->id : $currentQuestionData;
 
-        $answers = session('qizz_answers');
-        $answers[$currentQuestionId] = $request->input('answer');
-        session(['quizz_answers' => $answers]);
-        session(['quizz_current_index' => $currentIndex + 1]);
-        // dd(session('quizz_current_index'));
+    // 3. ✓ FIXED TYPO: 'qizz_answers' ko badal kar 'quizz_answers' kar diya
+    $answers = session('quizz_answers', []); // Default clear empty array mapping
+    
+    // Bind the user selection options direct to the targeted primary key database vector
+    $answers[$currentQuestionId] = $request->input('answer');
+    
+    // 4. Commit Matrix Mutation Stream to Session Storage
+    session(['quizz_answers' => $answers]);
+    session(['quizz_current_index' => $currentIndex + 1]);
 
-
-        return redirect()->route('show-quizz-question');
-    }
+    // 5. Next Node Redirect Sequence
+    return redirect()->route('show-quizz-question');
+}
     public function quizzCompletion()
     {
         // 1. Session data nikaalein
