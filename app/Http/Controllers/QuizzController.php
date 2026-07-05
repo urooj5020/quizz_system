@@ -97,7 +97,7 @@ class QuizzController extends Controller
 
     public function adminData()
     {
-        $totalUsers = User::get();
+        $totalUsers = User::where('is_admin', '0')->get();
         $activeQuestions = Question::get();
         $activeQuizzes = Quizz::where('status', 'active')->get();
         $quizzRuns = AttemptedQuizz::get();
