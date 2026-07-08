@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizzController;
+use App\Models\Quizz;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
-    return view('welcome');
+    $quizzes = Quizz::withCount('questions')
+        ->where('status', 'active')
+        ->latest()
+        ->get();
+
+    return view('welcome', compact('quizzes'));
 });
 
 /*
@@ -31,8 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//  3. PUBLIC FRONTEND QUIZ 
-
+//  3. PUBLIC FRONTEND QUIZ
 
 Route::get('/start-quizz/{id}', [QuestionController::class, 'startQuizz'])->name('start-quizz');
 Route::get('/show-quizz-question', [QuestionController::class, 'showQuestion'])->name('show-quizz-question');
@@ -41,9 +46,7 @@ Route::get('/quizz-completed', [QuestionController::class, 'quizzCompletion'])->
 Route::get('/review', [QuestionController::class, 'review'])->name('review');
 Route::get('/evaluation-complete', [QuestionController::class, 'evaluation'])->name('evaluation-complete');
 
-
-
-// 4. PROTECTED ADMINISTRATIVE 
+// 4. PROTECTED ADMINISTRATIVE
 
 Route::middleware(['auth'])->group(function () {
 

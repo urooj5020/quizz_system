@@ -128,6 +128,7 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-widest theme-muted">
+                <a href="#quizzes" class="hover:theme-text transition-colors">Quizzes</a>
                 <a href="#features" class="hover:theme-text transition-colors">Features</a>
                 <a href="#benefits" class="hover:theme-text transition-colors">Why Quizzes</a>
                 <a href="#how-it-works" class="hover:theme-text transition-colors">How It Works</a>
@@ -222,6 +223,73 @@
 
         </div>
 
+    </section>
+
+
+    <section id="quizzes" class="w-full py-24 px-6 md:px-8 relative overflow-hidden border-t theme-border">
+        <div
+            class="absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none dark:bg-indigo-500/[0.08]">
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10 space-y-12">
+            <div class="max-w-3xl text-left">
+                <span
+                    class="text-[10px] font-semibold tracking-widest uppercase text-indigo-600 dark:text-white block">Explore</span>
+                <h2 class="text-3xl sm:text-4xl font-bold theme-text tracking-tight font-display mt-2">
+                    Available Quizzes
+                </h2>
+                <p class="text-base theme-muted font-light mt-4 leading-relaxed">
+                    Test your knowledge with our curated collection of quizzes.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($quizzes as $quiz)
+                    <div
+                        class="group p-6 rounded-2xl theme-panel-soft border theme-border hover:shadow-md transition-all duration-300 flex flex-col">
+                        <div class="flex items-start justify-between mb-4">
+                            <span
+                                class="text-[10px] font-semibold uppercase tracking-widest text-indigo-600 dark:text-white px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+                                {{ $quiz->category }}
+                            </span>
+                            <div class="flex items-center gap-1.5 text-xs theme-muted">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $quiz->time }}
+                            </div>
+                        </div>
+
+                        <h3 class="text-lg font-bold font-display theme-text tracking-wide mb-2 group-hover:text-indigo-500 transition-colors">
+                            {{ $quiz->title }}
+                        </h3>
+
+                        <p class="text-sm theme-muted font-light leading-relaxed mb-6 line-clamp-2">
+                            {{ $quiz->desc }}
+                        </p>
+
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="text-xs theme-muted flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                {{ $quiz->questions_count }} {{ Str::plural('question', $quiz->questions_count) }}
+                            </span>
+
+                            
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-16">
+                        <svg class="w-12 h-12 mx-auto theme-muted mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2-2z" />
+                        </svg>
+                        <p class="text-lg font-display font-semibold theme-muted">No quizzes available yet</p>
+                        <p class="text-sm theme-muted font-light mt-2">Check back soon for new quizzes!</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
     </section>
 
 

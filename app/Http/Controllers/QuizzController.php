@@ -70,7 +70,8 @@ class QuizzController extends Controller
     {
         $quizz = Quizz::findOrFail($id);
         $categories = Category::get();
-        return view('admin.form', compact('quizz' , 'categories'));
+
+        return view('admin.form', compact('quizz', 'categories'));
     }
 
     public function update(Request $request, $id)
