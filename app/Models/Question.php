@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = [    
+    protected $fillable = [
         'content',
         'option_one',
         'option_two',
@@ -16,6 +16,5 @@ class Question extends Model
         'correct_key',
         'quizz_id',
 
-
-       ];
+    ];
 }

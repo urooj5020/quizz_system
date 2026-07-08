@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('time');
             $table->longText('desc');
-            $table->enum('status',['active' , 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

@@ -20,12 +20,13 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-
     public function index()
     {
         $users = User::get()->all();
+
         return view('admin.user', compact('users'));
     }
+
     public function create(): View
     {
         return view('auth.register');
@@ -40,7 +41,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -54,13 +55,14 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
         return redirect(route('dashboard', absolute: false));
     }
-
 
     public function user($id)
     {
         $user = User::findOrFail($id);
+
         return view('admin.eachUser', compact('user'));
     }
 
@@ -68,8 +70,9 @@ class RegisteredUserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->update([
-            'status' => 'inactive'
+            'status' => 'inactive',
         ]);
+
         return back();
     }
 
@@ -77,8 +80,9 @@ class RegisteredUserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->update([
-            'status' => 'active'
+            'status' => 'active',
         ]);
+
         return back();
     }
 
@@ -120,8 +124,10 @@ class RegisteredUserController extends Controller
         ));
     }
 
-    public function adminDetail(){
-        $admin = User::where('is_admin' , '1')->get();
-        return view('admin.admin-detail' , compact('admin'));
+    public function adminDetail()
+    {
+        $admin = User::where('is_admin', '1')->get();
+
+        return view('admin.admin-detail', compact('admin'));
     }
 }

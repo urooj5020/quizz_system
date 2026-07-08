@@ -14,22 +14,25 @@ class QuizzController extends Controller
     public function index()
     {
         $quizzData = Quizz::all();
+
         return view('admin.quizzFactory', compact('quizzData'));
     }
 
     public function cancel()
     {
         session()->forget('quizz_id');
+
         return redirect('quizz-factory');
     }
+
     public function create()
     {
-        $categories = Category::where('status' , '=' , 'active')->get();
-        
+        $categories = Category::where('status', '=', 'active')->get();
+
         return view('admin.form', [
-        'quizz' => new Quizz(),
-        'categories' => $categories
-    ]);
+            'quizz' => new Quizz,
+            'categories' => $categories,
+        ]);
     }
 
     public function store(Request $request)
@@ -39,7 +42,7 @@ class QuizzController extends Controller
             'category' => 'required',
             'time' => 'required',
             'desc' => 'required',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
         ]);
 
         $quizz = Quizz::create([
@@ -47,10 +50,11 @@ class QuizzController extends Controller
             'category' => $request->category,
             'time' => $request->time,
             'desc' => $request->desc,
-            'status' => $request->status
+            'status' => $request->status,
         ]);
         $quizz->save();
         session()->put('quizz_id', $quizz->id);
+
         return redirect('quizz-question');
     }
 
@@ -65,8 +69,10 @@ class QuizzController extends Controller
     public function edit($id)
     {
         $quizz = Quizz::findOrFail($id);
-        return view('admin.form', compact('quizz'));
+        $categories = Category::get();
+        return view('admin.form', compact('quizz' , 'categories'));
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -74,9 +80,8 @@ class QuizzController extends Controller
             'category' => 'required',
             'time' => 'required',
             'desc' => 'required',
-            'status' => 'required'
+            'status' => 'required',
         ]);
-
 
         $quizz = Quizz::findOrFail($id);
 
@@ -85,13 +90,16 @@ class QuizzController extends Controller
             'category' => $request->category,
             'time' => $request->time,
             'desc' => $request->desc,
-            'status' => $request->status
+            'status' => $request->status,
         ]);
+
         return redirect()->route('quizz-factory');
     }
+
     public function delete($id)
     {
         Quizz::findOrFail($id)->delete(); // No need to assign to a variable before deleting
+
         return redirect()->back();
     }
 
@@ -104,6 +112,7 @@ class QuizzController extends Controller
         $globalAvrgScore = $quizzRuns->avg('score') ?? 0;
         $passed = AttemptedQuizz::where('score', '>', '50')->get();
         $failed = AttemptedQuizz::where('score', '<=', '50')->get();
+
         return view('admin.dashboard', compact(
             'totalUsers',
             'activeQuestions',
@@ -114,7 +123,4 @@ class QuizzController extends Controller
             'passed'
         ));
     }
-
-
-
 }

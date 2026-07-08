@@ -2,10 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    color-scheme: light;
+    --bg: #ffffff;
+    --panel: #f8f9fa;
+    --panel-soft: #f3f4f6;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --accent: #4f46e5;
+    --accent-soft: rgba(79, 70, 229, 0.12);
+    --success: #059669;
+    --danger: #dc2626;
+    --shadow: rgba(0, 0, 0, 0.06);
 
+    --admin-bg: #f8fafc;
+    --admin-secondary: #f1f5f9;
+    --admin-raised: #ffffff;
+    --admin-fg: #0f172a;
+    --admin-fg-secondary: #1e293b;
+    --admin-muted: #64748b;
+    --admin-muted-soft: #94a3b8;
+    --admin-border: #e2e8f0;
+    --admin-border-strong: #cbd5e1;
+    --admin-accent-soft: rgba(79, 70, 229, 0.08);
+    --admin-shadow: rgba(0, 0, 0, 0.06);
+    --admin-hover-bg: #e2e8f0;
+    --admin-hover-text: #0f172a;
+    --admin-badge-bg: #f1f5f9;
+    --admin-badge-text: #0f172a;
+    --admin-badge-border: #e2e8f0;
+}
+
+html[data-theme='dark'],
+html.dark {
+    color-scheme: dark;
+    --bg: #050505;
+    --panel: #0d0d0d;
+    --panel-soft: #111111;
+    --text: #f5f5f5;
+    --muted: #a0a0a0;
+    --border: #1a1a1a;
+    --border-strong: #2a2a2a;
+    --accent: #ffffff;
+    --accent-soft: rgba(255, 255, 255, 0.08);
+    --success: #34d399;
+    --danger: #f87171;
+    --shadow: rgba(0, 0, 0, 0.5);
+
+    --admin-bg: #050505;
+    --admin-secondary: #0a0a0a;
+    --admin-raised: #0d0d0d;
+    --admin-fg: #f5f5f5;
+    --admin-fg-secondary: #d4d4d4;
+    --admin-muted: #6b7280;
+    --admin-muted-soft: #4b5563;
+    --admin-border: #1a1a1a;
+    --admin-border-strong: #2a2a2a;
+    --admin-accent-soft: rgba(255, 255, 255, 0.06);
+    --admin-shadow: rgba(0, 0, 0, 0.6);
+    --admin-hover-bg: rgba(255, 255, 255, 0.08);
+    --admin-hover-text: #f5f5f5;
+    --admin-badge-bg: rgba(255, 255, 255, 0.06);
+    --admin-badge-text: #f5f5f5;
+    --admin-badge-border: rgba(255, 255, 255, 0.15);
+}
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .font-display {
@@ -16,36 +84,71 @@ body {
     display: none !important;
 }
 
-main {
-    height: calc(100vh - 4rem) !important;
-    overflow-y: auto !important;
-    display: block !important;
+.theme-shell {
+    background-color: var(--bg);
+    color: var(--text);
 }
 
-/* PREMIUM DARK MATRIX SCROLLBAR STYLING */
-/* 1. Track (Scrollbar background line) */
+.theme-panel {
+    background-color: var(--panel);
+    border-color: var(--border);
+    box-shadow: 0 12px 30px var(--shadow);
+}
+
+.theme-panel-soft {
+    background-color: var(--panel-soft);
+    border-color: var(--border);
+}
+
+.theme-text {
+    color: var(--text);
+}
+
+.theme-muted {
+    color: var(--muted);
+}
+
+.theme-border {
+    border-color: var(--border);
+}
+
+.theme-accent {
+    color: var(--accent);
+}
+
+.theme-accent-soft {
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent-soft);
+}
+
+.bg-admin-surface { background-color: var(--admin-bg); }
+.bg-admin-secondary { background-color: var(--admin-secondary); }
+.bg-admin-raised { background-color: var(--admin-raised); }
+.text-admin-fg { color: var(--admin-fg); }
+.text-admin-secondary { color: var(--admin-fg-secondary); }
+.text-admin-muted { color: var(--admin-muted); }
+.text-admin-muted-soft { color: var(--admin-muted-soft); }
+.border-admin { border-color: var(--admin-border); }
+.border-admin-strong { border-color: var(--admin-border-strong); }
+.shadow-admin { box-shadow: 0 4px 20px var(--admin-shadow); }
+.bg-admin-badge { background-color: var(--admin-badge-bg); }
+.text-admin-badge { color: var(--admin-badge-text); }
+.border-admin-badge { border-color: var(--admin-badge-border); }
+
 main::-webkit-scrollbar {
     width: 8px;
-    /* Width perfectly subtle */
 }
 
 main::-webkit-scrollbar-track {
-    background: #050507;
-    /* Blends 100% into your main console color */
+    background: transparent;
 }
 
-/* 2. Thumb (The moving handle indicator) */
 main::-webkit-scrollbar-thumb {
-    background: #18181b;
-    /* Sleek zinc-800 tone */
+    background: var(--border-strong);
     border-radius: 9999px;
-    /* Rounded pill shape for modern UI */
-    border: 2px solid #050507;
-    /* Creates space around the slider */
 }
 
-/* 3. Thumb on Hover (Brighter interaction feedback) */
 main::-webkit-scrollbar-thumb:hover {
-    background: #27272a;
-    /* Zinc-700 on hover */
+    background: var(--accent);
 }

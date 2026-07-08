@@ -16,7 +16,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | 2. USER AUTHENTICATED CORE DASHBOARD & PROFILE MATRIX
@@ -32,12 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//  3. PUBLIC FRONTEND QUIZ 
 
-/*
-|--------------------------------------------------------------------------
-| 3. PUBLIC FRONTEND QUIZ LIVE RUNTIME ENGINE (Bypasses Admin Auth Guard)
-|--------------------------------------------------------------------------
-*/
+
 Route::get('/start-quizz/{id}', [QuestionController::class, 'startQuizz'])->name('start-quizz');
 Route::get('/show-quizz-question', [QuestionController::class, 'showQuestion'])->name('show-quizz-question');
 Route::post('/submit-answer', [QuestionController::class, 'submitAnswer'])->name('submit-answer');
@@ -46,17 +42,15 @@ Route::get('/review', [QuestionController::class, 'review'])->name('review');
 Route::get('/evaluation-complete', [QuestionController::class, 'evaluation'])->name('evaluation-complete');
 
 
-/*
-|--------------------------------------------------------------------------
-| 4. PROTECTED ADMINISTRATIVE CONSOLE CLUSTER (Auth Middleware Group)
-|--------------------------------------------------------------------------
-*/
+
+// 4. PROTECTED ADMINISTRATIVE 
+
 Route::middleware(['auth'])->group(function () {
-    
+
     // --- System Control Panels ---
     Route::get('/admin-dashboard', [QuizzController::class, 'adminData'])->name('dashboard-overview');
     Route::get('/admin/categories', [CategoryController::class, 'index'])->middleware('can:access-admin');
-    Route::get('/admin-detail' , [RegisteredUserController::class , 'adminDetail'])->name('admin-detail');
+    Route::get('/admin-detail', [RegisteredUserController::class, 'adminDetail'])->name('admin-detail');
     // --- User Management Node Matrices ---
     Route::get('/users', [RegisteredUserController::class, 'index'])->name('show-users');
     Route::get('/user/{id}', [RegisteredUserController::class, 'user'])->name('user-info');
@@ -95,4 +89,4 @@ Route::middleware(['auth'])->group(function () {
 | 5. INTERNAL AUTHENTICATION SUBSYSTEM VECTORS (Laravel Breeze)
 |--------------------------------------------------------------------------
 */
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

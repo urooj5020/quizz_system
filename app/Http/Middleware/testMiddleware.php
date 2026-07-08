@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
 class testMiddleware
@@ -21,9 +20,10 @@ class testMiddleware
         if (in_array($request->ip(), $blockedIPs)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Your IP address has been blocked. Please contact Niobi support for assistance.'
+                'message' => 'Your IP address has been blocked. Please contact Niobi support for assistance.',
             ], 403);
         }
+
         return $next($request);
     }
 }

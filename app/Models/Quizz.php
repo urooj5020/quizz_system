@@ -11,15 +11,16 @@ class Quizz extends Model
         'category',
         'time',
         'desc',
-        'status'
+        'status',
     ];
 
     public function attempts()
     {
         return $this->hasMany(AttemptedQuizz::class, 'quizz_id');
     }
+
     public function questions()
-{
-    return $this->hasMany(Question::class, 'quizz_id'); 
-}
+    {
+        return $this->hasMany(Question::class, 'quizz_id');
+    }
 }

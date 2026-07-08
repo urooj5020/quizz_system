@@ -4,25 +4,25 @@
     <div class="space-y-8">
 
         <div
-            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-zinc-900 pb-6 text-left">
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-admin pb-6 text-left">
             <div>
                 <div class="flex items-center gap-2 mb-2">
                     <span
-                        class="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                        System Database
+                        class="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-admin-badge text-admin-fg border border-admin-badge">
+                        Users
                     </span>
-                    <span class="text-[10px] font-mono text-zinc-500">
+                    <span class="text-[10px] font-mono text-admin-muted">
                         Status: Connected
                     </span>
                 </div>
 
-                <h1 class="text-2xl font-display font-bold tracking-tight text-white">
-                    User Access Control
+                <h1 class="text-2xl font-display font-bold tracking-tight text-admin-fg">
+                    User Management
                 </h1>
 
-                <div class="flex items-center gap-4 font-mono text-[10px] text-zinc-500 uppercase tracking-wider mt-1.5">
-                    <span>// Manage System Accounts</span>
-                    <span class="hidden md:inline text-zinc-600">|</span>
+                <div class="flex items-center gap-4 font-mono text-[10px] text-admin-muted uppercase tracking-wider mt-1.5">
+                    <span>View and manage user accounts</span>
+                    <span class="hidden md:inline text-admin-muted-soft">|</span>
                     <span class="hidden md:inline">Security Level: <span
                             class="text-emerald-400 font-bold">Protected</span></span>
                 </div>
@@ -39,28 +39,28 @@
         </div>
 
         <form action="#" method="GET"
-            class="grid grid-cols-1 sm:grid-cols-4 gap-4 bg-zinc-950/20 border border-zinc-900 p-4 rounded-xl">
+            class="grid grid-cols-1 sm:grid-cols-4 gap-4 bg-admin-secondary border border-admin p-4 rounded-xl">
             <div class="relative sm:col-span-2">
                 <input type="text" name="search" placeholder="Search by name, ID, or email..." value=""
-                    class="w-full bg-[#050507] border border-zinc-900 rounded-lg px-3 py-2 text-xs font-mono text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors">
+                    class="w-full bg-admin-surface border border-admin rounded-lg px-3 py-2 text-xs font-mono text-admin-fg placeholder-admin-muted-soft focus:outline-none focus:border-indigo-500 transition-colors">
             </div>
 
             <div>
                 <select name="clearance"
-                    class="w-full bg-[#050507] border border-zinc-900 rounded-lg px-3 py-2 text-xs font-mono text-zinc-400 focus:outline-none focus:border-indigo-500 transition-colors">
-                    <option value="">// Permission Level</option>
-                    <option value="alpha">Admin (Full Access)</option>
-                    <option value="beta">Manager (Restricted Access)</option>
-                    <option value="delta">Guest (Read-Only)</option>
+                    class="w-full bg-admin-surface border border-admin rounded-lg px-3 py-2 text-xs font-mono text-admin-muted focus:outline-none focus:border-indigo-500 transition-colors">
+                    <option value="">Role</option>
+                    <option value="alpha">Admin</option>
+                    <option value="beta">Manager</option>
+                    <option value="delta">Guest</option>
                 </select>
             </div>
 
             <div>
                 <select name="status"
-                    class="w-full bg-[#050507] border border-zinc-900 rounded-lg px-3 py-2 text-xs font-mono text-zinc-400 focus:outline-none focus:border-indigo-500 transition-colors">
-                    <option value="">Sort By: Performance</option>
-                    <option value="high">Usage: High Load</option>
-                    <option value="low">Usage: Low Idle</option>
+                    class="w-full bg-admin-surface border border-admin rounded-lg px-3 py-2 text-xs font-mono text-admin-muted focus:outline-none focus:border-indigo-500 transition-colors">
+                    <option value="">Sort by</option>
+                    <option value="high">Most Active</option>
+                    <option value="low">Least Active</option>
                 </select>
             </div>
         </form>
@@ -70,19 +70,19 @@
 
                 <!-- Clickable Row Element -->
                 <button type="button"
-                    class="w-full text-left block bg-[#050507] border border-zinc-900 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-zinc-950/40 hover:border-zinc-800 transition-all group">
+                    class="w-full text-left block bg-admin-surface border border-admin rounded-lg p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-admin-raised hover:border-admin-strong transition-all group">
 
                     <!-- Left Side: Basic Info -->
                     <div class="flex items-center gap-3">
                         <div
-                            class="text-[11px] font-mono font-bold text-indigo-400 bg-indigo-500/5 border border-indigo-500/10 px-2 py-1 rounded group-hover:border-indigo-500/30 transition-colors">
+                            class="text-[11px] font-mono font-bold text-admin-fg bg-admin-badge border border-admin-badge px-2 py-1 rounded group-hover:border-admin-strong transition-colors">
                             0{{ $user->id }}-A
                         </div>
                         <div>
-                            <h4 class="text-xs font-bold text-zinc-200 group-hover:text-white transition-colors">
+                            <h4 class="text-xs font-bold text-admin-fg group-hover:text-admin-fg transition-colors">
                                 {{ $user->name }}
                             </h4>
-                            <p class="text-[10px] font-mono text-zinc-500">IP: 10.0.94.12</p>
+                            <p class="text-[10px] font-mono text-admin-muted">{{ $user->email }}</p>
                         </div>
                     </div>
 
@@ -90,16 +90,15 @@
                     <div class="flex items-center gap-6 text-[11px] font-mono">
 
                         <div>
-                            <span class="text-zinc-600 block text-[9px] uppercase tracking-wide">Status</span>
+                            <span class="text-admin-muted-soft block text-[9px] uppercase tracking-wide">Status</span>
                             <span class="text-emerald-400 font-bold">{{ Str::ucfirst($user->status) }}</span>
                         </div>
                     </div>
 
                     <!-- Right Side: Action Icons -->
-                    <div class="flex items-center justify-end gap-1.5 border-t sm:border-t-0 border-zinc-900 pt-2 sm:pt-0">
-                        <!-- Edit Icon Button -->
+                    <div class="flex items-center justify-end gap-1.5 border-t sm:border-t-0 border-admin pt-2 sm:pt-0">
                         <a href="{{ route('user-info', $user->id) }}" title="Edit Status"
-                            class="p-1.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-zinc-500 hover:text-zinc-200 rounded transition-all">
+                            class="p-1.5 hover:bg-admin-raised border border-transparent hover:border-admin text-admin-muted hover:text-admin-fg rounded transition-all">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -115,13 +114,13 @@
 
         @endforeach
         <div
-            class="mt-8 pt-4 border-t border-zinc-900/40 flex items-center justify-between text-xs font-mono text-zinc-500">
-            <div>Showing 1 to 2 of 58 registered accounts</div>
+            class="mt-8 pt-4 border-t border-admin flex items-center justify-between text-xs font-mono text-admin-muted">
+            <div>Showing 1 to 2 of 58 users</div>
             <div class="flex gap-2">
                 <a href="#"
-                    class="px-3 py-1.5 bg-zinc-950/20 border border-zinc-900 text-zinc-700 rounded-lg cursor-not-allowed pointer-events-none">Previous</a>
+                    class="px-3 py-1.5 bg-admin-raised border border-admin text-admin-muted-soft rounded-lg cursor-not-allowed pointer-events-none">Previous</a>
                 <a href="#"
-                    class="px-3 py-1.5 bg-zinc-950 border border-zinc-900 hover:border-zinc-800 text-zinc-400 rounded-lg hover:text-white transition-colors duration-150">Next</a>
+                    class="px-3 py-1.5 bg-admin-raised border border-admin hover:border-admin-strong text-admin-muted rounded-lg hover:text-admin-fg transition-colors duration-150">Next</a>
             </div>
         </div>
 

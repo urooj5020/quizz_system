@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\AttemptedQuizz;
+use App\Models\Question;
 use App\Models\Quizz;
 use Illuminate\Http\Request;
-use App\Models\Question;
 
 class QuestionController extends Controller
 {
-
     public function create()
     {
 
         return view('admin.question', [
-            'question' => new Question()
+            'question' => new Question,
         ]);
     }
+
     public function addFromExisting($id)
     {
         session()->put('quizz_id', $id);
+
         return view('admin.question', [
-            'question' => new Question()
+            'question' => new Question,
         ]);
     }
+
     public function store(Request $request)
     {
         // 1. Structural fields filter validation array
@@ -77,6 +78,7 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $question = Question::findOrFail($id);
+
         return view('admin.question', compact('question'));
 
     }
@@ -122,10 +124,12 @@ class QuestionController extends Controller
 
         return redirect()->route('show', ['id' => $question->quizz_id]);
     }
+
     public function delete($id)
     {
         $question = Question::findOrFail($id);
         $question->delete();
+
         return back();
     }
 
@@ -133,22 +137,22 @@ class QuestionController extends Controller
     {
         $questionIds = Question::where('quizz_id', $id)->pluck('id')->toArray();
         if (empty($questionIds)) {
-            return back()->with('error', "No Questions Found");
+            return back()->with('error', 'No Questions Found');
         }
         session([
             'quizz_id' => $id,
             'quizz_questions' => $questionIds,
             'quizz_current_index' => 0,
-            'quizz_answers' => []
+            'quizz_answers' => [],
         ]);
 
         return redirect()->route('show-quizz-question');
     }
+
     public function showQuestion()
     {
         $questions = session('quizz_questions');
         $currentIndex = session('quizz_current_index', 0);
-
 
         if ($currentIndex >= count($questions)) {
 
@@ -157,42 +161,44 @@ class QuestionController extends Controller
         $questionId = $questions[$currentIndex];
 
         $question = Question::findOrFail($questionId);
+
         return view('quizzQuestion', [
             'question' => $question,
             'currentIndex' => $currentIndex,
-            'totalQuestions' => count($questions)
+            'totalQuestions' => count($questions),
         ]);
     }
 
- public function submitAnswer(Request $request)
-{
-    // 1. Request Validation Shield
-    $request->validate([
-        'answer' => 'required'
-    ]);
+    public function submitAnswer(Request $request)
+    {
+        // 1. Request Validation Shield
+        $request->validate([
+            'answer' => 'required',
+        ]);
 
-    // 2. Fetch Session Matrix Pipelines
-    $questions = session('quizz_questions');
-    $currentIndex = session('quizz_current_index', 0);
+        // 2. Fetch Session Matrix Pipelines
+        $questions = session('quizz_questions');
+        $currentIndex = session('quizz_current_index', 0);
 
-    // Dynamic extraction of active question context
-    // Safe check: Agar array mein objects hain to ID lein, warna direct check karein
-    $currentQuestionData = $questions[$currentIndex];
-    $currentQuestionId = is_object($currentQuestionData) ? $currentQuestionData->id : $currentQuestionData;
+        // Dynamic extraction of active question context
+        // Safe check: Agar array mein objects hain to ID lein, warna direct check karein
+        $currentQuestionData = $questions[$currentIndex];
+        $currentQuestionId = is_object($currentQuestionData) ? $currentQuestionData->id : $currentQuestionData;
 
-    // 3. ✓ FIXED TYPO: 'qizz_answers' ko badal kar 'quizz_answers' kar diya
-    $answers = session('quizz_answers', []); // Default clear empty array mapping
-    
-    // Bind the user selection options direct to the targeted primary key database vector
-    $answers[$currentQuestionId] = $request->input('answer');
-    
-    // 4. Commit Matrix Mutation Stream to Session Storage
-    session(['quizz_answers' => $answers]);
-    session(['quizz_current_index' => $currentIndex + 1]);
+        // 3. ✓ FIXED TYPO: 'qizz_answers' ko badal kar 'quizz_answers' kar diya
+        $answers = session('quizz_answers', []); // Default clear empty array mapping
 
-    // 5. Next Node Redirect Sequence
-    return redirect()->route('show-quizz-question');
-}
+        // Bind the user selection options direct to the targeted primary key database vector
+        $answers[$currentQuestionId] = $request->input('answer');
+
+        // 4. Commit Matrix Mutation Stream to Session Storage
+        session(['quizz_answers' => $answers]);
+        session(['quizz_current_index' => $currentIndex + 1]);
+
+        // 5. Next Node Redirect Sequence
+        return redirect()->route('show-quizz-question');
+    }
+
     public function quizzCompletion()
     {
         // 1. Session data nikaalein
@@ -235,8 +241,9 @@ class QuestionController extends Controller
         $attemptedRecord = AttemptedQuizz::create([
             'quizz_id' => $quizz_id,
             'user_id' => $user_id,
-            'score' => $scorePercentage
+            'score' => $scorePercentage,
         ]);
+
         // 5. Data View compact pipeline mapping
         return view('quizzComplete', compact(
             'quizz_info',
@@ -254,6 +261,7 @@ class QuestionController extends Controller
 
         // Pass user responses array mapping [question_id => user_selected_key]
         $sessionAnswers = session('quizz_answers', []);
+
         return view('review', compact('questions', 'sessionAnswers'));
     }
 
@@ -261,11 +269,4 @@ class QuestionController extends Controller
     {
         return redirect()->route('dashboard');
     }
-
-
-
-
-
-
-
 }
